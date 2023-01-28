@@ -29,8 +29,6 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
             slot: slot.toUpperCase(),
         }
 
-        console.log("load topGear for", match);
-
         return {
             slotName: slot,
             rows: await gears.aggregate<GearCardRowData>([
@@ -52,6 +50,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                 itemLevel: "$itemLevel",
                             },
                         },
+                        maxKeyLevel: { $max: "$keylevel" },
                         count: {$count: {}},
                     },
                 },
@@ -81,6 +80,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                 },
                             },
                         },
+                        maxKeyLevel: 1,
                         count: 1,
                     },
                 },
@@ -90,8 +90,6 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
             ], {allowDiskUse: true}).toArray(),
         }
     } finally {
-        console.log("done")
-
         // Ensures that the client will close when you finish/error
         await client.close();
     }

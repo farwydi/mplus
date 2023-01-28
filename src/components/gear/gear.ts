@@ -5,10 +5,8 @@ export interface GearCardData {
 
 export interface GearCardRowData {
     count: number
-    // className: string
-    // specName: string
-    // slot: string
     items: Gear
+    maxKeyLevel: number
 }
 
 export type Gear =

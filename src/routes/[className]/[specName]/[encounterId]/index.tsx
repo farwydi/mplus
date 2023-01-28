@@ -16,7 +16,6 @@ export const onGet: RequestHandler<PageData> = async ({params}) => {
     const {combine} = await import('~/dataset/combine')
     const {topGear} = await import('~/dataset/top-gear')
 
-
     const baseQuery = {
         className: params.className,
         specName: params.specName,
@@ -83,19 +82,19 @@ export const onGet: RequestHandler<PageData> = async ({params}) => {
     }
 };
 
-interface Meta {
+interface Meta extends RouteParams {
     className: string
     specName: string
-    encounterId: number
+    encounterId: string
 }
 
 export const onStaticGenerate: StaticGenerateHandler = () => {
     const meta = {
-        // "WARRIOR": [
-        //     "ARMS",
-        //     "FURY",
-        //     "PROTECTION",
-        // ],
+        "WARRIOR": [
+            "ARMS",
+            "FURY",
+            "PROTECTION",
+        ],
         // "PALADIN": [
         //     "HOLY",
         //     "PROTECTION",
@@ -131,11 +130,11 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
         //     "FIRE",
         //     "FROST",
         // ],
-        // "WARLOCK": [
-        //     "AFFLICTION",
-        //     "DEMONOLOGY",
-        //     "DESTRUCTION",
-        // ],
+        "WARLOCK": [
+            "AFFLICTION",
+            "DEMONOLOGY",
+            "DESTRUCTION",
+        ],
         "MONK": [
             "BREWMASTER",
             "MISTWEAVER",
@@ -164,13 +163,13 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
                     return {
                         className: className.toLowerCase(),
                         specName: specName.toLowerCase(),
-                        encounterId: 0,
+                        encounterId: "0",
                     }
                 })
             })
             .reduce((previousValue, currentValue) => {
                 return [...previousValue, ...currentValue]
-            }, [] as RouteParams[]),
+            }, [] as Meta[]),
     };
 };
 
@@ -179,7 +178,7 @@ interface PageProp {
 }
 
 export const Page = component$(({props: {bestCombineGear, bestInSlotGear}}: PageProp) => {
-    console.log(bestCombineGear)
+    console.log(bestCombineGear, bestInSlotGear[0].rows)
     return (
         <div class="container mx-auto">
             <h2 class="text-white">Combine</h2>

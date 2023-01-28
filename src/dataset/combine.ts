@@ -29,8 +29,6 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
             slot: slot.toUpperCase(),
         }
 
-        console.log("load combine for", match);
-
         return {
             slotName: slot,
             rows: await gears.aggregate<GearCardRowData>([
@@ -38,7 +36,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                     $match: match,
                 },
                 {
-                    $sort: {id: -1},
+                    $sort: {itemId: -1},
                 },
                 {
                     $group: {
@@ -59,6 +57,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                 icon: "$icon",
                             },
                         },
+                        keyLevel: { $first: "$keylevel" },
                     },
                 },
                 {
@@ -72,6 +71,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                         items: {
                             $push: "$items",
                         },
+                        maxKeyLevel: { $max: "$keyLevel" },
                         count: {$count: {}},
                     },
                 },
@@ -110,6 +110,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                 },
                             },
                         },
+                        maxKeyLevel: 1,
                         count: 1,
                     },
                 },
@@ -119,8 +120,6 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
             ], {allowDiskUse: true}).toArray(),
         }
     } finally {
-        console.log("done")
-
         // Ensures that the client will close when you finish/error
         await client.close();
     }

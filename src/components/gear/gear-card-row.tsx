@@ -39,13 +39,13 @@ interface GearCardRowProps {
     props: GearCardRowData;
 }
 
-export default component$<GearCardRowProps>(({props: {items, count}}) => {
+export default component$<GearCardRowProps>(({props: {items, count, maxKeyLevel}}) => {
     return (
         <div className="h-14 p-1.5 flex flex-row border-2 border-large-500 m-1">
             <GearCardResolver props={items}/>
             <div className="ml-auto flex w-32 flex-row items-center">
                 <div className="flex-1 text-center text-white">
-                    24
+                    {maxKeyLevel}
                 </div>
                 <div className="flex-1 text-center text-white">
                     {count}
