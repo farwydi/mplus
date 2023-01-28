@@ -9,6 +9,7 @@ databases:
 static_sites:
   - name: mplus
     dockerfile_path: Dockerfile
+    output_dir: dist
     github:
       branch: main
       deploy_on_push: true
