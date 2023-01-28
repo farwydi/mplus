@@ -8,7 +8,7 @@ databases:
     version: "5"
 static_sites:
   - name: mplus
-    build_command: npm run build
+    dockerfile_path: Dockerfile
     github:
       branch: main
       deploy_on_push: true
