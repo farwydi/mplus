@@ -131,11 +131,11 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
         //     "FIRE",
         //     "FROST",
         // ],
-        "WARLOCK": [
-            "AFFLICTION",
-            "DEMONOLOGY",
-            "DESTRUCTION",
-        ],
+        // "WARLOCK": [
+        //     "AFFLICTION",
+        //     "DEMONOLOGY",
+        //     "DESTRUCTION",
+        // ],
         // "MONK": [
         //     "BREWMASTER",
         //     "MISTWEAVER",
