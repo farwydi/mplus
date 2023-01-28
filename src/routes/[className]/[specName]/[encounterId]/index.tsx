@@ -91,11 +91,11 @@ interface Meta {
 
 export const onStaticGenerate: StaticGenerateHandler = () => {
     const meta = {
-        "WARRIOR": [
-            "ARMS",
-            "FURY",
-            "PROTECTION",
-        ],
+        // "WARRIOR": [
+        //     "ARMS",
+        //     "FURY",
+        //     "PROTECTION",
+        // ],
         // "PALADIN": [
         //     "HOLY",
         //     "PROTECTION",
@@ -136,11 +136,11 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
         //     "DEMONOLOGY",
         //     "DESTRUCTION",
         // ],
-        // "MONK": [
-        //     "BREWMASTER",
-        //     "MISTWEAVER",
-        //     "WINDWALKER",
-        // ],
+        "MONK": [
+            "BREWMASTER",
+            "MISTWEAVER",
+            "WINDWALKER",
+        ],
         // "DRUID": [
         //     "BALANCE",
         //     "FERAL",
