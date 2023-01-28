@@ -21,7 +21,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
     const connect = await client.connect()
 
     try {
-        const database = connect.db('admin');
+        const database = connect.db('divot');
         const gears = database.collection('gears');
 
         const match = {
