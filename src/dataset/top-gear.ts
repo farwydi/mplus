@@ -14,7 +14,6 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
     if (uri === '') {
         console.error("empty mongo uri");
     }
-    console.log(uri);
 
     const client = new MongoClient(uri);
 

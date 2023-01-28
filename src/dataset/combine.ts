@@ -14,7 +14,6 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
     if (uri === '') {
         console.error("empty mongo uri");
     }
-    console.log(uri);
 
     const client = new MongoClient(uri);
 
