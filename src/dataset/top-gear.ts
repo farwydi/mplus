@@ -12,8 +12,9 @@ interface TopGearParam {
 
 export const topGear = async ({className, specName, slot}: TopGearParam): Promise<GearCardData> => {
     if (uri === '') {
-        console.error("empty mongo uri", uri);
+        console.error("empty mongo uri");
     }
+    console.log(uri);
 
     const client = new MongoClient(uri);
 
