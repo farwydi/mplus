@@ -2,10 +2,11 @@
   "name": "my-qwik-basic-starter",
   "description": "App with Routing built-in (recommended)",
   "engines": {
-    "node": ">=15.0.0"
+    "node": "16.x"
   },
   "private": true,
   "scripts": {
+    "build:digitalOcean": "qwik build",
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
@@ -40,5 +41,8 @@
     "undici": "5.14.0",
     "vite": "4.0.3",
     "vite-tsconfig-paths": "3.5.0"
+  },
+  "dependencies": {
+    "mongodb": "^4.13.0"
   }
 }

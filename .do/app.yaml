@@ -1,0 +1,18 @@
+name: mplus
+region: fra1
+databases:
+  - cluster_name: db-mongodb-fra1-99251
+    engine: MONGODB
+    name: db-mongodb-fra1-99251
+    production: true
+    version: "5"
+static_sites:
+  - name: mplus
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: farwydi/mplus
+    envs:
+      - key: MONGO_DB
+        scope: BUILD_TIME
+        value: "mongodb+srv://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/${db.DATABASE}?authSource=admin&tls=true"
