@@ -87,7 +87,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                 {
                     $limit: 5,
                 }
-            ]).toArray(),
+            ], {allowDiskUse: true}).toArray(),
         }
     } finally {
         console.log("done")

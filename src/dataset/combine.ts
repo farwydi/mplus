@@ -116,7 +116,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                 {
                     $limit: 5,
                 }
-            ]).toArray(),
+            ], {allowDiskUse: true}).toArray(),
         }
     } finally {
         console.log("done")
