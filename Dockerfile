@@ -4,7 +4,7 @@ FROM node:19
 RUN env
 ENV MONGO_DB=$MONGO_DB
 WORKDIR /app
-
+RUN env
 
 
 COPY package.json .
