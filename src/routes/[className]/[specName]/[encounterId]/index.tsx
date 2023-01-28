@@ -1,5 +1,5 @@
-import { Resource, component$, Slot } from '@builder.io/qwik';
-import { StaticGenerateHandler, useEndpoint } from "@builder.io/qwik-city";
+import { Resource, component$ } from '@builder.io/qwik';
+import { RouteParams, StaticGenerateHandler, useEndpoint } from "@builder.io/qwik-city";
 import type { RequestHandler } from '@builder.io/qwik-city';
 import GearCard from "~/components/gear/gear-card";
 import { GearCardData } from "~/components/gear/gear";
@@ -15,6 +15,7 @@ interface PageData {
 export const onGet: RequestHandler<PageData> = async ({params}) => {
     const {combine} = await import('~/dataset/combine')
     const {topGear} = await import('~/dataset/top-gear')
+
 
     const baseQuery = {
         className: params.className,
@@ -82,11 +83,94 @@ export const onGet: RequestHandler<PageData> = async ({params}) => {
     }
 };
 
+interface Meta {
+    className: string
+    specName: string
+    encounterId: number
+}
+
 export const onStaticGenerate: StaticGenerateHandler = () => {
+    const meta = {
+        "WARRIOR": [
+            "ARMS",
+            "FURY",
+            "PROTECTION",
+        ],
+        // "PALADIN": [
+        //     "HOLY",
+        //     "PROTECTION",
+        //     "RETRIBUTION",
+        // ],
+        // "HUNTER": [
+        //     "BEAST_MASTERY",
+        //     "MARKSMANSHIP",
+        //     "SURVIVAL",
+        // ],
+        // "ROGUE": [
+        //     "ASSASSINATION",
+        //     "OUTLAW",
+        //     "SUBTLETY",
+        // ],
+        // "PRIEST": [
+        //     "DISCIPLINE",
+        //     "HOLY",
+        //     "SHADOW",
+        // ],
+        // "DEATH": [
+        //     "KNIGHT_BLOOD",
+        //     "KNIGHT_FROST",
+        //     "KNIGHT_UNHOLY",
+        // ],
+        // "SHAMAN": [
+        //     "ELEMENTAL",
+        //     "ENHANCEMENT",
+        //     "RESTORATION",
+        // ],
+        // "MAGE": [
+        //     "ARCANE",
+        //     "FIRE",
+        //     "FROST",
+        // ],
+        "WARLOCK": [
+            "AFFLICTION",
+            "DEMONOLOGY",
+            "DESTRUCTION",
+        ],
+        // "MONK": [
+        //     "BREWMASTER",
+        //     "MISTWEAVER",
+        //     "WINDWALKER",
+        // ],
+        // "DRUID": [
+        //     "BALANCE",
+        //     "FERAL",
+        //     "GUARDIAN",
+        //     "RESTORATION",
+        // ],
+        // "DEMON": [
+        //     "HUNTER_HAVOC",
+        //     "HUNTER_VENGEANCE",
+        // ],
+        // "EVOKER": [
+        //     "DEVASTATION",
+        //     "PRESERVATION",
+        // ],
+    }
     return {
-        // params: meta.map(() => {
-        //     return {className: "WARLOCK", specName: "AFFLICTION"};
-        // }),
+        params: Object
+            .entries(meta)
+            .map(([className, specs]): Meta[] => {
+                return specs.map(specName => {
+                    return {
+                        className: className.toLowerCase(),
+                        specName: specName.toLowerCase(),
+                        encounterId: 0,
+                    }
+                })
+            })
+            .reduce((previousValue, currentValue) => {
+                return [...previousValue, ...currentValue]
+            }, [] as RouteParams[]),
     };
 };
 

@@ -5,7 +5,7 @@ interface TooltipProps {
     props: GearTooltipData;
 }
 
-export const Tooltip = component$<TooltipProps>(({props: {id, name, icon}}) => {
+export const Tooltip = component$<TooltipProps>(({props: {name}}) => {
     return (
         <div
             className="group-hover:scale-100 scale-0 min-w-[270px] text-sm z-10 absolute p-2 flex flex-col text-white border-2 border-large-500 bg-huge-500 whitespace-nowrap">
@@ -20,7 +20,7 @@ interface GearTooltipProps {
 }
 
 export default component$<GearTooltipProps>(({props}) => {
-    const {id, name, icon, minItemLevel, maxItemLevel} = props
+    const {icon} = props
 
     return (
         <div className="relative group mr-1.5">

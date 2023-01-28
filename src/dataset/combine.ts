@@ -29,7 +29,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
             slot: slot.toUpperCase(),
         }
 
-        console.log("load for", match);
+        console.log("load combine for", match);
 
         return {
             slotName: slot,
@@ -46,12 +46,14 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                             className: "$className",
                             specName: "$specName",
                             slot: "$slot",
-                            ranking: "$ranking",
+                            rankingC: "$ranking.reportCode",
+                            rankingF: "$ranking.fightId",
+                            rankingN: "$ranking.characterName",
                         },
-                        combine: {$push: "$id"},
+                        combine: {$push: "$itemId"},
                         items: {
                             $push: {
-                                id: "$id",
+                                itemId: "$itemId",
                                 itemLevel: "$itemLevel",
                                 name: "$name",
                                 icon: "$icon",
@@ -96,7 +98,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                                     accItem: {$arrayElemAt: ["$$value", "$$itemIndex"]},
                                                 },
                                                 in: {
-                                                    id: "$$accItem.id",
+                                                    itemId: "$$accItem.itemId",
                                                     name: "$$accItem.name",
                                                     icon: "$$accItem.icon",
                                                     maxItemLevel: {$max: ["$$accItem.maxItemLevel", "$$thisItem.itemLevel"]},

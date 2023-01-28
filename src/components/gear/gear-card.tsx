@@ -1,8 +1,6 @@
 import { component$ } from "@builder.io/qwik";
-import { Gear, GearCardData } from "~/components/gear/gear";
+import { GearCardData } from "~/components/gear/gear";
 import GearCardRow from "~/components/gear/gear-card-row";
-import GearTooltip from "~/components/gear/gear-tooltip";
-
 
 
 interface GearCardProps {

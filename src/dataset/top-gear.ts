@@ -29,7 +29,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
             slot: slot.toUpperCase(),
         }
 
-        console.log("load for", match);
+        console.log("load topGear for", match);
 
         return {
             slotName: slot,
@@ -43,7 +43,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                             className: "$className",
                             specName: "$specName",
                             slot: "$slot",
-                            id: "$id",
+                            itemId: "$itemId",
                         },
                         itemName: {$first: "$name"},
                         itemIcon: {$first: "$icon"},
@@ -65,7 +65,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                             $reduce: {
                                 input: "$items",
                                 initialValue: {
-                                    id: "$_id.id",
+                                    itemId: "$_id.itemId",
                                     name: "$itemName",
                                     icon: "$itemIcon",
                                     itemLevel: {$first: "$items.itemLevel"},
@@ -73,7 +73,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                 in: {
                                     // $$this   - {itemLevel: 427}
                                     // $$value  - accumulator
-                                    id: "$$value.id",
+                                    itemId: "$$value.itemId",
                                     name: "$$value.name",
                                     icon: "$$value.icon",
                                     maxItemLevel: {$max: ["$$value.maxItemLevel", "$$this.itemLevel"]},
