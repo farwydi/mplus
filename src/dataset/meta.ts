@@ -88,6 +88,18 @@ export const medals = [
     "none"
 ]
 
+export const dungeonsIds = [
+    "0",
+    "12526",
+    "61571",
+    "61477",
+    "12521",
+    "61176",
+    "10960",
+    "12515",
+    "12516",
+]
+
 export const dungeons = {
     "Algeth'ar Academy": 12526,
     "Court of Stars": 61571,

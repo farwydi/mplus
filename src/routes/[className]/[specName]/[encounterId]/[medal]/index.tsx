@@ -3,7 +3,7 @@ import { Link, RouteParams, StaticGenerateHandler, useEndpoint, useLocation } fr
 import type { RequestHandler } from '@builder.io/qwik-city';
 import GearCard from "~/components/gear/gear-card";
 import { GearCardData } from "~/components/gear/gear";
-import { dungeons, medals, shortDungeons, specs } from "~/dataset/meta";
+import { dungeons, dungeonsIds, medals, shortDungeons, specs } from "~/dataset/meta";
 
 interface PageData {
     className: string;
@@ -94,18 +94,21 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
     return {
         params: Object
             .entries(specs)
-            .map(([className, specs]): Meta[] => {
+            .map(([className, specs]): Meta[][][] => {
                 return specs.map(specName => {
-                    return {
-                        className: className,
-                        specName: specName,
-                        encounterId: "0",
-                    }
+                    return dungeonsIds.map(encounterId => {
+                        return medals.map(medal => {
+                            return {
+                                className,
+                                specName,
+                                encounterId,
+                                medal,
+                            }
+                        })
+                    })
                 })
             })
-            .reduce((previousValue, currentValue) => {
-                return [...previousValue, ...currentValue]
-            }, [] as Meta[]),
+            .flat(3)
     };
 };
 
