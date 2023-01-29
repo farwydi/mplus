@@ -95,8 +95,8 @@ export const onStaticGenerate: StaticGenerateHandler = () => {
             .map(([className, specs]): Meta[] => {
                 return specs.map(specName => {
                     return {
-                        className: className.toLowerCase(),
-                        specName: specName.toLowerCase(),
+                        className: className,
+                        specName: specName,
                         encounterId: "0",
                     }
                 })
@@ -112,7 +112,6 @@ interface PageProp {
 }
 
 export const Page = component$(({props: {bestCombineGear, bestInSlotGear}}: PageProp) => {
-    console.log(bestCombineGear, bestInSlotGear[0].rows)
     return (
         <div class="container mx-auto">
             <h2 class="text-white">Combine</h2>
