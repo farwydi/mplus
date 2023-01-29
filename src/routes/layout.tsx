@@ -6,13 +6,11 @@ export default component$(() => {
             <nav class="text-white">
 
             </nav>
-            <main>
-                <section>
-                    <Slot/>
-                </section>
+            <main class="text-white">
+                <Slot/>
             </main>
             <div
-                class="hidden text-itemLevel text-rare text-uncommon text-epic border-epic border-rare border-common border-uncommon"></div>
+                class="hidden text-itemLevel text-rare text-uncommon text-artifact text-epic border-artifact border-epic border-rare border-common border-uncommon"></div>
         </>
     );
 });

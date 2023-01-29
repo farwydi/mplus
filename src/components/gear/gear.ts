@@ -14,11 +14,13 @@ export type Gear =
     | GearTooltipData[]
 
 export interface GearTooltipData {
-    id: number;
+    itemId: number;
     name: Local;
     icon: string;
     maxItemLevel: number;
     minItemLevel: number;
+    hasSet: boolean
+    isCraft: boolean
 }
 
 export interface Local {

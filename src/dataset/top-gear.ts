@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 import { GearCardData, GearCardRowData } from "~/components/gear/gear";
+import { medals } from "~/dataset/meta";
 
 const uri =
     process.env.MONGO_DB || '';
@@ -8,9 +9,11 @@ interface TopGearParam {
     className: string
     specName: string
     slot: string
+    encounterId: string
+    medal: string
 }
 
-export const topGear = async ({className, specName, slot}: TopGearParam): Promise<GearCardData> => {
+export const topGear = async ({className, specName, encounterId, slot, medal}: TopGearParam): Promise<GearCardData> => {
     if (uri === '') {
         console.error("empty mongo uri");
     }
@@ -21,15 +24,17 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
 
     try {
         const database = connect.db('divot');
-        const gears = database.collection(`gears_${className}_${specName}_${slot}`);
+        const gears = database.collection(`gears_${className}_${specName}`);
 
-        const match = {
-            // className,
-            // specName,
-            // slot,
+        let match = {
+            slot,
             medal: {
-                $in: ['gold', 'silver', 'bronze'],
+                $in: medals.slice(0, medals.indexOf(medal)+1),
             },
+        }
+
+        if (encounterId != "0") {
+            match = Object.assign(match, {encounterId})
         }
 
         return {
@@ -48,6 +53,8 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                         },
                         itemName: {$first: "$name"},
                         itemIcon: {$first: "$icon"},
+                        itemHasSet: {$first: "$hasSet"},
+                        itemIsCraft: {$first: "$isCraft"},
                         items: {
                             $push: {
                                 itemLevel: "$itemLevel",
@@ -73,6 +80,8 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                     itemId: "$_id.itemId",
                                     name: "$itemName",
                                     icon: "$itemIcon",
+                                    hasSet: "$itemHasSet",
+                                    isCraft: "$itemIsCraft",
                                     itemLevel: {$first: "$items.itemLevel"},
                                 },
                                 in: {
@@ -81,6 +90,8 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                     itemId: "$$value.itemId",
                                     name: "$$value.name",
                                     icon: "$$value.icon",
+                                    hasSet: "$$value.hasSet",
+                                    isCraft: "$$value.isCraft",
                                     maxItemLevel: {$max: ["$$value.maxItemLevel", "$$this.itemLevel"]},
                                     minItemLevel: {$min: ["$$value.minItemLevel", "$$this.itemLevel"]},
                                 },

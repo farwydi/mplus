@@ -14,7 +14,6 @@ module.exports = {
             epic: '#a335ee',
             legendary: '#ff8000',
             artifact: '#e6cc80',
-            heirloom: '#00ccff',
             wowtoken: '#00ccff',
             huge: {
                 50: "#F1E7DF",

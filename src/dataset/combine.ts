@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 import { GearCardData, GearCardRowData } from "~/components/gear/gear";
+import { medals } from "~/dataset/meta";
 
 const uri =
     process.env.MONGO_DB || '';
@@ -8,9 +9,11 @@ interface CombineParam {
     className: string
     specName: string
     slot: string
+    encounterId: string
+    medal: string
 }
 
-export const combine = async ({className, specName, slot}: CombineParam): Promise<GearCardData> => {
+export const combine = async ({className, specName, encounterId, slot, medal}: CombineParam): Promise<GearCardData> => {
     if (uri === '') {
         console.error("empty mongo uri");
     }
@@ -21,15 +24,17 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
 
     try {
         const database = connect.db('divot');
-        const gears = database.collection(`gears_${className}_${specName}_${slot}`);
+        const gears = database.collection(`gears_${className}_${specName}`);
 
-        const match = {
-            // className,
-            // specName,
-            // slot,
+        let match = {
+            slot,
             medal: {
-                $in: ['gold', 'silver', 'bronze'],
+                $in: medals.slice(0, medals.indexOf(medal)+1),
             },
+        }
+
+        if (encounterId != "0") {
+            match = Object.assign(match, {encounterId})
         }
 
         return {
@@ -58,6 +63,8 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                 itemLevel: "$itemLevel",
                                 name: "$name",
                                 icon: "$icon",
+                                hasSet: "$hasSet",
+                                isCraft: "$isCraft",
                             },
                         },
                         keyLevel: {$first: "$keyLevel"},
@@ -107,6 +114,8 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                                     itemId: "$$accItem.itemId",
                                                     name: "$$accItem.name",
                                                     icon: "$$accItem.icon",
+                                                    hasSet: "$$accItem.hasSet",
+                                                    isCraft: "$$accItem.isCraft",
                                                     maxItemLevel: {$max: ["$$accItem.maxItemLevel", "$$thisItem.itemLevel"]},
                                                     minItemLevel: {$min: ["$$accItem.minItemLevel", "$$thisItem.itemLevel"]},
                                                 },
