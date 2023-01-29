@@ -27,7 +27,9 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
             // className,
             // specName,
             // slot,
-            medal: "gold",
+            medal: {
+                $in: ['gold', 'silver', 'bronze'],
+            },
         }
 
         return {
@@ -58,7 +60,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                 icon: "$icon",
                             },
                         },
-                        keyLevel: { $first: "$keyLevel" },
+                        keyLevel: {$first: "$keyLevel"},
                     },
                 },
                 {
@@ -72,7 +74,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                         items: {
                             $push: "$items",
                         },
-                        maxKeyLevel: { $max: "$keyLevel" },
+                        maxKeyLevel: {$max: "$keyLevel"},
                         count: {$count: {}},
                     },
                 },

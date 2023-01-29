@@ -27,7 +27,9 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
             // className,
             // specName,
             // slot,
-            medal: "gold",
+            medal: {
+                $in: ['gold', 'silver', 'bronze'],
+            },
         }
 
         return {
