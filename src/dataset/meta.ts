@@ -1,7 +1,7 @@
 export const meta = {
-    // "Priest": ["Discipline", "Holy", "Shadow"],
-    // "Shaman": ["Elemental", "Enhancement", "Restoration"],
-    // "Druid": ["Balance", "Feral", "Guardian", "Restoration"],
+    "Priest": ["Discipline", "Holy", "Shadow"],
+    "Shaman": ["Elemental", "Enhancement", "Restoration"],
+    "Druid": ["Balance", "Feral", "Guardian", "Restoration"],
     "DemonHunter": ["Havoc", "Vengeance"],
     "Warrior": ["Arms", "Fury", "Protection"],
     // "Paladin": ["Holy", "Protection", "Retribution"],

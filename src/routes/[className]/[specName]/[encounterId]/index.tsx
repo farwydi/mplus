@@ -23,62 +23,62 @@ export const onGet: RequestHandler<PageData> = async ({params}) => {
 
     return {
         ...baseQuery,
-        bestCombineGear: [
-            await combine({
+        bestCombineGear: await Promise.all([
+            combine({
                 ...baseQuery,
                 slot: "TRINKET",
             }),
-            await combine({
+            combine({
                 ...baseQuery,
                 slot: "WEAPON",
             }),
-            await combine({
+            combine({
                 ...baseQuery,
                 slot: "FINGER",
             }),
-        ],
-        bestInSlotGear: [
-            await topGear({
+        ]),
+        bestInSlotGear: await Promise.all([
+            topGear({
                 ...baseQuery,
                 slot: "HEAD",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "NECK",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "SHOULDER",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "CHEST",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "WAIST",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "LEGS",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "FEET",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "WRIST",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "HAND",
             }),
-            await topGear({
+            topGear({
                 ...baseQuery,
                 slot: "CLOAK",
             }),
-        ],
+        ]),
     }
 };
 

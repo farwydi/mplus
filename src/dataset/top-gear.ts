@@ -58,6 +58,9 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                     $sort: {count: -1}
                 },
                 {
+                    $limit: 5,
+                },
+                {
                     $project: {
                         _id: 0,
                         items: {
@@ -84,9 +87,6 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                         count: 1,
                     },
                 },
-                {
-                    $limit: 5,
-                }
             ], {allowDiskUse: true}).toArray(),
         }
     } finally {

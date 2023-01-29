@@ -79,6 +79,9 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                     $sort: {count: -1}
                 },
                 {
+                    $limit: 5,
+                },
+                {
                     $project: {
                         _id: 0,
                         items: {
@@ -114,9 +117,6 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                         count: 1,
                     },
                 },
-                {
-                    $limit: 5,
-                }
             ], {allowDiskUse: true}).toArray(),
         }
     } finally {
