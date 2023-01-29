@@ -21,12 +21,13 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
 
     try {
         const database = connect.db('divot');
-        const gears = database.collection('gears');
+        const gears = database.collection(`gears_${className}_${specName}_${slot}`);
 
         const match = {
-            className,
-            specName,
-            slot,
+            // className,
+            // specName,
+            // slot,
+            medal: "gold",
         }
 
         return {
@@ -50,7 +51,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                 itemLevel: "$itemLevel",
                             },
                         },
-                        maxKeyLevel: { $max: "$keyLevel" },
+                        maxKeyLevel: {$max: "$keyLevel"},
                         count: {$count: {}},
                     },
                 },

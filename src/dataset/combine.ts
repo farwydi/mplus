@@ -21,12 +21,13 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
 
     try {
         const database = connect.db('divot');
-        const gears = database.collection('gears');
+        const gears = database.collection(`gears_${className}_${specName}_${slot}`);
 
         const match = {
-            className,
-            specName,
-            slot,
+            // className,
+            // specName,
+            // slot,
+            medal: "gold",
         }
 
         return {
