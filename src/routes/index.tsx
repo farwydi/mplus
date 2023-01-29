@@ -11,7 +11,7 @@ export default component$(() => {
                     return (
                         <Link
                             class="text-white block p-2"
-                            href={`${className.toLowerCase()}/${specName.toLowerCase()}/0/`}
+                            href={`${className}/${specName}/0/`}
                         >
                             {className} {specName}
                         </Link>)
