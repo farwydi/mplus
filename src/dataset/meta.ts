@@ -1,0 +1,15 @@
+export const meta = {
+    // "Priest": ["Discipline", "Holy", "Shadow"],
+    // "Shaman": ["Elemental", "Enhancement", "Restoration"],
+    // "Druid": ["Balance", "Feral", "Guardian", "Restoration"],
+    "DemonHunter": ["Havoc", "Vengeance"],
+    "Warrior": ["Arms", "Fury", "Protection"],
+    // "Paladin": ["Holy", "Protection", "Retribution"],
+    // "Rogue": ["Assassination", "Outlaw", "Subtlety"],
+    "Warlock": ["Affliction", "Demonology", "Destruction"],
+    "Monk": ["Brewmaster", "Mistweaver", "Windwalker"],
+    // "Evoker": ["Devastation", "Preservation"],
+    // "Hunter": ["BeastMastery", "Marksmanship", "Survival"],
+    "DeathKnight": ["Blood", "Frost", "Unholy"],
+    // "Mage": ["Arcane", "Fire", "Frost"],
+}

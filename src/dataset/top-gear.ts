@@ -24,9 +24,9 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
         const gears = database.collection('gears');
 
         const match = {
-            className: className.toUpperCase(),
-            specName: specName.toUpperCase(),
-            slot: slot.toUpperCase(),
+            className,
+            specName,
+            slot,
         }
 
         return {
@@ -50,7 +50,7 @@ export const topGear = async ({className, specName, slot}: TopGearParam): Promis
                                 itemLevel: "$itemLevel",
                             },
                         },
-                        maxKeyLevel: { $max: "$keylevel" },
+                        maxKeyLevel: { $max: "$keyLevel" },
                         count: {$count: {}},
                     },
                 },

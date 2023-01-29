@@ -3,6 +3,7 @@ import { RouteParams, StaticGenerateHandler, useEndpoint } from "@builder.io/qwi
 import type { RequestHandler } from '@builder.io/qwik-city';
 import GearCard from "~/components/gear/gear-card";
 import { GearCardData } from "~/components/gear/gear";
+import { meta } from "~/dataset/meta";
 
 interface PageData {
     className: string;
@@ -10,7 +11,6 @@ interface PageData {
     bestCombineGear: GearCardData[];
     bestInSlotGear: GearCardData[];
 }
-
 
 export const onGet: RequestHandler<PageData> = async ({params}) => {
     const {combine} = await import('~/dataset/combine')
@@ -89,72 +89,6 @@ interface Meta extends RouteParams {
 }
 
 export const onStaticGenerate: StaticGenerateHandler = () => {
-    const meta = {
-        "WARRIOR": [
-            "ARMS",
-            "FURY",
-            "PROTECTION",
-        ],
-        // "PALADIN": [
-        //     "HOLY",
-        //     "PROTECTION",
-        //     "RETRIBUTION",
-        // ],
-        // "HUNTER": [
-        //     "BEAST_MASTERY",
-        //     "MARKSMANSHIP",
-        //     "SURVIVAL",
-        // ],
-        // "ROGUE": [
-        //     "ASSASSINATION",
-        //     "OUTLAW",
-        //     "SUBTLETY",
-        // ],
-        // "PRIEST": [
-        //     "DISCIPLINE",
-        //     "HOLY",
-        //     "SHADOW",
-        // ],
-        // "DEATH": [
-        //     "KNIGHT_BLOOD",
-        //     "KNIGHT_FROST",
-        //     "KNIGHT_UNHOLY",
-        // ],
-        // "SHAMAN": [
-        //     "ELEMENTAL",
-        //     "ENHANCEMENT",
-        //     "RESTORATION",
-        // ],
-        // "MAGE": [
-        //     "ARCANE",
-        //     "FIRE",
-        //     "FROST",
-        // ],
-        "WARLOCK": [
-            "AFFLICTION",
-            "DEMONOLOGY",
-            "DESTRUCTION",
-        ],
-        "MONK": [
-            "BREWMASTER",
-            "MISTWEAVER",
-            "WINDWALKER",
-        ],
-        // "DRUID": [
-        //     "BALANCE",
-        //     "FERAL",
-        //     "GUARDIAN",
-        //     "RESTORATION",
-        // ],
-        // "DEMON": [
-        //     "HUNTER_HAVOC",
-        //     "HUNTER_VENGEANCE",
-        // ],
-        // "EVOKER": [
-        //     "DEVASTATION",
-        //     "PRESERVATION",
-        // ],
-    }
     return {
         params: Object
             .entries(meta)

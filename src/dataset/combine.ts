@@ -24,9 +24,9 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
         const gears = database.collection('gears');
 
         const match = {
-            className: className.toUpperCase(),
-            specName: specName.toUpperCase(),
-            slot: slot.toUpperCase(),
+            className,
+            specName,
+            slot,
         }
 
         return {
@@ -44,9 +44,9 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                             className: "$className",
                             specName: "$specName",
                             slot: "$slot",
-                            rankingC: "$ranking.reportCode",
-                            rankingF: "$ranking.fightId",
-                            rankingN: "$ranking.characterName",
+                            rankingC: "$rankingCode",
+                            rankingF: "$rankingID",
+                            rankingN: "$rankingName",
                         },
                         combine: {$push: "$itemId"},
                         items: {
@@ -57,7 +57,7 @@ export const combine = async ({className, specName, slot}: CombineParam): Promis
                                 icon: "$icon",
                             },
                         },
-                        keyLevel: { $first: "$keylevel" },
+                        keyLevel: { $first: "$keyLevel" },
                     },
                 },
                 {
