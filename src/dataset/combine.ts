@@ -29,12 +29,12 @@ export const combine = async ({className, specName, encounterId, slot, medal}: C
         let match = {
             slot,
             medal: {
-                $in: medals.slice(0, medals.indexOf(medal)+1),
+                $in: medals.slice(0, medals.indexOf(medal) + 1),
             },
         }
 
         if (encounterId != "0") {
-            match = Object.assign(match, {encounterId})
+            match = Object.assign(match, {encounterId: Number(encounterId)})
         }
 
         return {
@@ -49,8 +49,6 @@ export const combine = async ({className, specName, encounterId, slot, medal}: C
                 {
                     $group: {
                         _id: {
-                            className: "$className",
-                            specName: "$specName",
                             slot: "$slot",
                             rankingC: "$rankingCode",
                             rankingF: "$rankingID",
