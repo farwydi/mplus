@@ -37,6 +37,29 @@ export const GearCardResolver = component$<GearCardResolverProps>(({props}) => {
     )
 });
 
+export const SkeletonRow = component$(() => {
+    return (
+        <div
+            className="h-14 p-1.5 flex flex-row border-2 border-large-500 m-1 items-center">
+            <div className="mr-1.5">
+                <div className="w-9 h-9 bg-large-500"></div>
+            </div>
+            <div className="flex flex-col justify-center">
+                <div className="h-2.5 bg-large-300 rounded-full mb-2.5 w-36"></div>
+                <div className="h-2 bg-large-200 rounded-full w-10"></div>
+            </div>
+            <div className="ml-auto flex w-32 flex-row items-center">
+                <div className="flex-1">
+                    <div className="h-2 bg-large-200 rounded-full w-8"></div>
+                </div>
+                <div className="flex-1">
+                    <div className="h-2 bg-large-200 rounded-full w-8"></div>
+                </div>
+            </div>
+        </div>
+    )
+});
+
 interface GearCardRowProps {
     props: GearCardRowData;
 }

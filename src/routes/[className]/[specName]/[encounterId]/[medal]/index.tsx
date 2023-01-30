@@ -1,7 +1,7 @@
 import { Resource, component$, Slot } from '@builder.io/qwik';
 import { Link, RouteParams, StaticGenerateHandler, useEndpoint, useLocation } from "@builder.io/qwik-city";
 import type { RequestHandler } from '@builder.io/qwik-city';
-import GearCard from "~/components/gear/gear-card";
+import GearCard, { SkeletonCard } from "~/components/gear/gear-card";
 import { GearCardData } from "~/components/gear/gear";
 import { dungeons, dungeonsIds, medals, shortDungeons, specs } from "~/dataset/meta";
 
@@ -162,6 +162,20 @@ export const Medal = component$(() => {
     </div>
 });
 
+export const Legend = component$(() => {
+    return <>
+        <p className="mb-1">Legend:</p>
+        <div className="flex items-center">
+            <div className="w-5 mx-4 border-2 border-uncommon"></div>
+            <p>Set items</p>
+            <div className="w-5 mx-4 border-2 border-artifact"></div>
+            <p>Craft items</p>
+            <div className="w-5 mx-4 border-2 border-epic"></div>
+            <p>Other items</p>
+        </div>
+    </>
+});
+
 interface PageProp {
     props: PageData;
 }
@@ -169,22 +183,16 @@ interface PageProp {
 export const Page = component$<PageProp>(({props: {className, specName, bestCombineGear, bestInSlotGear}}) => {
     return (
         <div class="container mx-auto mt-4">
-            <h2 class="text-5xl mb-2">{className}</h2>
-            <h3 class="text-4xl mb-6">{specName}</h3>
+            <div className="h-32">
+                <h2 class="text-5xl mb-2">{className}</h2>
+                <h3 class="text-4xl mb-6">{specName}</h3>
+            </div>
 
             <Dungeons/>
 
             <Medal/>
 
-            <p class="mb-1">Legend:</p>
-            <div class="flex items-center">
-                <div class="w-5 mx-4 border-2 border-uncommon"></div>
-                <p>Set items</p>
-                <div class="w-5 mx-4 border-2 border-artifact"></div>
-                <p>Craft items</p>
-                <div class="w-5 mx-4 border-2 border-epic"></div>
-                <p>Other items</p>
-            </div>
+            <Legend/>
 
             <h3 class="text-3xl my-6">Bast Combine</h3>
             <div class="grid grid-cols-3">
@@ -199,13 +207,41 @@ export const Page = component$<PageProp>(({props: {className, specName, bestComb
     )
 })
 
+export const PageLoading = component$(() => {
+    return (
+        <div class="container mx-auto mt-4">
+            <div class="h-32">
+                <div className="h-12 bg-large-700 rounded-full mb-2.5 w-[270px] mb-2"></div>
+                <div className="h-8 bg-large-500 rounded-full mb-2.5 w-[160px] mb-6"></div>
+            </div>
+
+            <Dungeons/>
+
+            <Medal/>
+
+            <Legend/>
+
+            <h3 class="text-3xl my-6">Bast Combine</h3>
+            <div class="grid grid-cols-3">
+                {[1, 2, 3].map(() => <SkeletonCard/>)}
+            </div>
+
+            <h3 class="text-3xl my-6">Best in slot</h3>
+            <div class="grid grid-cols-3">
+                {[1, 2, 3].map(() => <SkeletonCard/>)}
+            </div>
+        </div>
+    )
+})
+
+
 export default component$(() => {
     const pageDataResource = useEndpoint<PageData>();
 
     return (
         <Resource
             value={pageDataResource}
-            onPending={() => <div>Loading...</div>}
+            onPending={() => <PageLoading/>}
             onRejected={() => <div>Error</div>}
             onResolved={(pageData) => <Page props={pageData}/>}
         />
