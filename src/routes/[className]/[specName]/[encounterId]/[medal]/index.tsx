@@ -13,6 +13,7 @@ interface PageData {
 }
 
 export const onGet: RequestHandler<PageData> = async ({params}) => {
+    const {aggregate} = await import('~/dataset/db')
     const {combine} = await import('~/dataset/combine')
     const {topGear} = await import('~/dataset/top-gear')
 
@@ -26,60 +27,60 @@ export const onGet: RequestHandler<PageData> = async ({params}) => {
     return {
         ...baseQuery,
         bestCombineGear: await Promise.all([
-            combine({
+            aggregate({
                 ...baseQuery,
                 slot: "TRINKET",
-            }),
-            combine({
+            }, combine),
+            aggregate({
                 ...baseQuery,
                 slot: "WEAPON",
-            }),
-            combine({
+            }, combine),
+            aggregate({
                 ...baseQuery,
                 slot: "FINGER",
-            }),
+            }, combine),
         ]),
         bestInSlotGear: await Promise.all([
-            topGear({
+            aggregate({
                 ...baseQuery,
                 slot: "HEAD",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "NECK",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "SHOULDER",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "CHEST",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "WAIST",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "LEGS",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "FEET",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "WRIST",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "HAND",
-            }),
-            topGear({
+            }, topGear),
+            aggregate({
                 ...baseQuery,
                 slot: "CLOAK",
-            }),
+            }, topGear),
         ]),
     }
 };

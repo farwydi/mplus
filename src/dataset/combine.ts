@@ -1,136 +1,93 @@
-import { MongoClient } from 'mongodb';
-import { GearCardData, GearCardRowData } from "~/components/gear/gear";
-import { medals } from "~/dataset/meta";
+import { Document } from "mongodb";
 
-const uri =
-    process.env.MONGO_DB || '';
-
-interface CombineParam {
-    className: string
-    specName: string
-    slot: string
-    encounterId: string
-    medal: string
-}
-
-export const combine = async ({className, specName, encounterId, slot, medal}: CombineParam): Promise<GearCardData> => {
-    if (uri === '') {
-        console.error("empty mongo uri");
-    }
-
-    const client = new MongoClient(uri);
-
-    const connect = await client.connect()
-
-    try {
-        const database = connect.db('divot');
-        const gears = database.collection(`gears_${className}_${specName}`);
-
-        let match = {
-            slot,
-            medal: {
-                $in: medals.slice(0, medals.indexOf(medal) + 1),
+export const combine = (match: any): Document[] => {
+    return [
+        {
+            $match: match,
+        },
+        {
+            $sort: {itemId: -1},
+        },
+        {
+            $group: {
+                _id: {
+                    slot: "$slot",
+                    rankingC: "$rankingCode",
+                    rankingF: "$rankingID",
+                    rankingN: "$rankingName",
+                },
+                combine: {$push: "$itemId"},
+                items: {
+                    $push: {
+                        itemId: "$itemId",
+                        itemLevel: "$itemLevel",
+                        name: "$name",
+                        icon: "$icon",
+                        hasSet: "$hasSet",
+                        isCraft: "$isCraft",
+                    },
+                },
+                keyLevel: {$first: "$keyLevel"},
             },
-        }
-
-        if (encounterId != "0") {
-            match = Object.assign(match, {encounterId: Number(encounterId)})
-        }
-
-        return {
-            slotName: slot,
-            rows: await gears.aggregate<GearCardRowData>([
-                {
-                    $match: match,
+        },
+        {
+            $group: {
+                _id: {
+                    className: "$_id.className",
+                    specName: "$_id.specName",
+                    slot: "$_id.slot",
+                    combine: "$combine",
                 },
-                {
-                    $sort: {itemId: -1},
+                items: {
+                    $push: "$items",
                 },
-                {
-                    $group: {
-                        _id: {
-                            slot: "$slot",
-                            rankingC: "$rankingCode",
-                            rankingF: "$rankingID",
-                            rankingN: "$rankingName",
-                        },
-                        combine: {$push: "$itemId"},
-                        items: {
-                            $push: {
-                                itemId: "$itemId",
-                                itemLevel: "$itemLevel",
-                                name: "$name",
-                                icon: "$icon",
-                                hasSet: "$hasSet",
-                                isCraft: "$isCraft",
-                            },
-                        },
-                        keyLevel: {$first: "$keyLevel"},
-                    },
-                },
-                {
-                    $group: {
-                        _id: {
-                            className: "$_id.className",
-                            specName: "$_id.specName",
-                            slot: "$_id.slot",
-                            combine: "$combine",
-                        },
-                        items: {
-                            $push: "$items",
-                        },
-                        maxKeyLevel: {$max: "$keyLevel"},
-                        count: {$count: {}},
-                    },
-                },
-                {
-                    $sort: {count: -1}
-                },
-                {
-                    $limit: 5,
-                },
-                {
-                    $project: {
-                        _id: 0,
-                        items: {
-                            $reduce: {
-                                input: "$items",
-                                initialValue: {$first: "$items"},
+                maxKeyLevel: {$max: "$keyLevel"},
+                count: {$count: {}},
+            },
+        },
+        {
+            $sort: {count: -1}
+        },
+        {
+            $limit: 5,
+        },
+        {
+            $project: {
+                _id: 0,
+                items: {
+                    $reduce: {
+                        input: "$items",
+                        initialValue: {$first: "$items"},
+                        in: {
+                            // $$this   - [{itemId: 1}, {itemId: 2}]
+                            // $$value  - accumulator
+                            $map: {
+                                input: {$range: [0, {$size: "$$value"}]},
+                                as: "itemIndex",
                                 in: {
-                                    // $$this   - [{itemId: 1}, {itemId: 2}]
-                                    // $$value  - accumulator
-                                    $map: {
-                                        input: {$range: [0, {$size: "$$value"}]},
-                                        as: "itemIndex",
+                                    $let: {
+                                        vars: {
+                                            thisItem: {$arrayElemAt: ["$$this", "$$itemIndex"]},
+                                            accItem: {$arrayElemAt: ["$$value", "$$itemIndex"]},
+                                        },
                                         in: {
-                                            $let: {
-                                                vars: {
-                                                    thisItem: {$arrayElemAt: ["$$this", "$$itemIndex"]},
-                                                    accItem: {$arrayElemAt: ["$$value", "$$itemIndex"]},
-                                                },
-                                                in: {
-                                                    itemId: "$$accItem.itemId",
-                                                    name: "$$accItem.name",
-                                                    icon: "$$accItem.icon",
-                                                    hasSet: "$$accItem.hasSet",
-                                                    isCraft: "$$accItem.isCraft",
-                                                    maxItemLevel: {$max: ["$$accItem.maxItemLevel", "$$thisItem.itemLevel"]},
-                                                    minItemLevel: {$min: ["$$accItem.minItemLevel", "$$thisItem.itemLevel"]},
-                                                },
-                                            },
+                                            itemId: "$$accItem.itemId",
+                                            name: "$$accItem.name",
+                                            icon: "$$accItem.icon",
+                                            hasSet: "$$accItem.hasSet",
+                                            isCraft: "$$accItem.isCraft",
+                                            maxItemLevel: {$max: ["$$accItem.maxItemLevel", "$$thisItem.itemLevel"]},
+                                            minItemLevel: {$min: ["$$accItem.minItemLevel", "$$thisItem.itemLevel"]},
                                         },
                                     },
                                 },
                             },
                         },
-                        maxKeyLevel: 1,
-                        count: 1,
                     },
                 },
-            ], {allowDiskUse: true}).toArray(),
-        }
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
-    }
+                maxKeyLevel: 1,
+                count: 1,
+            },
+        },
+    ]
 }
